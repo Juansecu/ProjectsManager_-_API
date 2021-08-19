@@ -15,10 +15,10 @@ import { UsersModule } from './users/users.module';
     ConfigModule.forRoot(),
     TypeOrmModule.forRoot({
       database: process.env.DATABASE_NAME,
+      entities: [__dirname + '/**/**/*.entity.{ts,js}'],
       host: process.env.DATABASE_HOST,
       password: process.env.DATABASE_PASSWORD,
       port: parseInt(process.env.DATABASE_PORT, 10),
-      synchronize: true,
       type: 'mysql',
       username: process.env.DATABASE_USER
     }),
