@@ -9,7 +9,10 @@ export default class UserHistoryEntity implements IUserHistory {
   @Column('varchar', { length: 45, name: 'Title', nullable: false })
   title: string;
   @Column('uuid', { name: 'User_id', nullable: false }) userId: string;
-  @Column('datetime', { default: 'CURRENT_TIMESTAMP', name: 'Created_at' })
+  @Column('datetime', {
+    default: () => 'CURRENT_TIMESTAMP',
+    name: 'Created_at'
+  })
   createdAt: Date;
   @Column('datetime', { name: 'Updated_at' }) updatedAt: Date;
 }

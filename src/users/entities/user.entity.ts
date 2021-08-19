@@ -25,7 +25,10 @@ export default class UserEntity implements IUser {
   lastName: string;
   @Column('varchar', { length: 10, name: 'Password', nullable: false })
   password: string;
-  @Column('datetime', { default: 'CURRENT_TIMESTAMP', name: 'Registered_at' })
+  @Column('datetime', {
+    default: () => 'CURRENT_TIMESTAMP',
+    name: 'Registered_at'
+  })
   registeredAt: Date;
   @Column('datetime', { name: 'Updated_at' }) updatedAt: Date;
 }
