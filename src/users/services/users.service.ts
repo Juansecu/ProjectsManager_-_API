@@ -1,5 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
+import { hash } from 'bcrypt';
 import { Repository } from 'typeorm';
 
 import UserEntity from '../entities/user.entity';
@@ -12,22 +13,24 @@ export class UsersService {
     private readonly _USERS_REPOSITORY: Repository<UserEntity>
   ) {}
 
-  addUser(user: AddUserDto) {
-    return this._USERS_REPOSITORY
-      .insert(user)
-      .then(user => {
-        return {
-          code: 201,
-          message: 'User created',
-          data: user
-        };
-      })
-      .catch((error: Error) => {
-        console.error(typeof Error, error.message);
-        return {
-          code: 500,
-          message: 'Hubo un error al crear el usuario'
-        };
-      });
+  async addUser(user: AddUserDto) {
+    const newUser = { ...user };
+
+    try {
+      newUser.password = await hash(user.password, 10);
+
+      await this._USERS_REPOSITORY.insert(newUser);
+
+      return {
+        code: 201,
+        message: 'Usuario creado satisfactoriamente'
+      };
+    } catch (error) {
+      console.error('\x1b[31m%s\x1b[0m', error.code, error.message);
+      return {
+        code: 500,
+        message: 'Hubo un error al crear el usuario'
+      };
+    }
   }
 }
