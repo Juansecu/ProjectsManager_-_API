@@ -17,6 +17,7 @@ import { UsersModule } from './users/users.module';
       database: process.env.DATABASE_NAME,
       entities: [__dirname + '/**/**/*.entity.{ts,js}'],
       host: process.env.DATABASE_HOST,
+      migrationsRun: true,
       password: process.env.DATABASE_PASSWORD,
       port: parseInt(process.env.DATABASE_PORT, 10),
       type: 'mysql',
