@@ -1,4 +1,12 @@
-import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
+import {
+  Column,
+  Entity,
+  JoinColumn,
+  ManyToOne,
+  PrimaryGeneratedColumn
+} from 'typeorm';
+
+import UserEntity from './user.entity';
 
 import { IUserHistory } from '../typings/UserHistory';
 
@@ -8,7 +16,13 @@ export default class UserHistoryEntity implements IUserHistory {
   userHistoryId: string;
   @Column('varchar', { length: 45, name: 'Title', nullable: false })
   title: string;
-  @Column('uuid', { name: 'User_id', nullable: false }) userId: string;
+  @JoinColumn({ name: 'User_id' })
+  @ManyToOne(() => UserEntity, user => user.userId, {
+    nullable: false,
+    onDelete: 'CASCADE',
+    onUpdate: 'CASCADE'
+  })
+  userId: string;
   @Column('datetime', {
     default: () => 'CURRENT_TIMESTAMP',
     name: 'Created_at'
