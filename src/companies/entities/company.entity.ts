@@ -27,7 +27,7 @@ export default class CompanyEntity {
   })
   phone: string;
   @Column('varchar', {
-    length: 45,
+    length: 75,
     name: 'Address',
     nullable: false,
     unique: true
