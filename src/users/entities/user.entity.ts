@@ -23,7 +23,7 @@ export default class UserEntity implements IUser {
   firstName: string;
   @Column('varchar', { length: 20, name: 'Last_name', nullable: false })
   lastName: string;
-  @Column('varchar', { length: 10, name: 'Password', nullable: false })
+  @Column('varchar', { length: 60, name: 'Password', nullable: false })
   password: string;
   @Column('datetime', {
     default: () => 'CURRENT_TIMESTAMP',
