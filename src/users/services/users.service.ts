@@ -17,6 +17,17 @@ export class UsersService {
     const newUser = { ...user };
 
     try {
+      if (this.getUserByEmail(newUser.email))
+        return {
+          code: 409,
+          message: 'User already exists'
+        };
+      if (this.getUserByUsername(newUser.username))
+        return {
+          code: 409,
+          message: 'Username already exists'
+        };
+
       newUser.password = await hash(user.password, 10);
 
       await this._USERS_REPOSITORY.insert(newUser);
@@ -31,6 +42,36 @@ export class UsersService {
         code: 500,
         message: 'Hubo un error al crear el usuario'
       };
+    }
+  }
+
+  async getUserByEmail(email: string) {
+    let user: UserEntity;
+
+    try {
+      user = await this._USERS_REPOSITORY.findOne({
+        where: { email }
+      });
+
+      return user;
+    } catch (error) {
+      console.error('\x1b[31m%s\x1b[0m', error.code, error.message);
+      return null;
+    }
+  }
+
+  async getUserByUsername(username: string) {
+    let user: UserEntity;
+
+    try {
+      user = await this._USERS_REPOSITORY.findOne({
+        where: { username }
+      });
+
+      return user;
+    } catch (error) {
+      console.error('\x1b[31m%s\x1b[0m', error.code, error.message);
+      return null;
     }
   }
 }
