@@ -30,5 +30,5 @@ export default class UserEntity implements IUser {
     name: 'Registered_at'
   })
   registeredAt: Date;
-  @Column('datetime', { name: 'Updated_at' }) updatedAt: Date;
+  @Column('datetime', { name: 'Updated_at', nullable: true }) updatedAt: Date;
 }

@@ -14,5 +14,5 @@ export default class UserHistoryEntity implements IUserHistory {
     name: 'Created_at'
   })
   createdAt: Date;
-  @Column('datetime', { name: 'Updated_at' }) updatedAt: Date;
+  @Column('datetime', { name: 'Updated_at', nullable: true }) updatedAt: Date;
 }
