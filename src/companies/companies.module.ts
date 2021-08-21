@@ -10,6 +10,7 @@ import { CompaniesService } from './services/companies.service';
 @Module({
   imports: [TypeOrmModule.forFeature([CompanyEntity])],
   controllers: [CompaniesController],
-  providers: [CompaniesService]
+  providers: [CompaniesService],
+  exports: [CompaniesService]
 })
 export class CompaniesModule {}

@@ -10,9 +10,12 @@ import { AddUserDto } from '../dtos/add-user.dto';
 import { LoginUserByEmailDto } from '../dtos/login-user-by-email.dto';
 import { LoginUserByUsernameDto } from '../dtos/login-user-by-username.dto';
 
+import { CompaniesService } from 'src/companies/services/companies.service';
+
 @Injectable()
 export class UsersService {
   constructor(
+    private readonly _COMPANIES_SERVICE: CompaniesService,
     @InjectRepository(UserEntity)
     private readonly _USERS_REPOSITORY: Repository<UserEntity>
   ) {}
@@ -63,6 +66,21 @@ export class UsersService {
     }
   }
 
+  async getUserById(userId: string): Promise<UserEntity> {
+    try {
+      const userExists = await this._USERS_REPOSITORY.findOne({
+        where: { userId }
+      });
+
+      if (userExists) return userExists;
+
+      return null;
+    } catch (error) {
+      console.log('\x1b[31m%s\x1b[0m', error.code, error.message);
+      return null;
+    }
+  }
+
   async getUserByUsername(username: string) {
     let user: UserEntity;
 
@@ -80,6 +98,23 @@ export class UsersService {
 
   async joinCompany(userId: string, companyId: string) {
     try {
+      const userExists = await this.getUserById(userId);
+      const companyExists = await this._COMPANIES_SERVICE.getCompanyById(
+        companyId
+      );
+
+      if (!userExists)
+        return {
+          code: 404,
+          message: 'Usuario no encontrado'
+        };
+
+      if (!companyExists)
+        return {
+          code: 404,
+          message: 'Empresa no encontrada'
+        };
+
       await this._USERS_REPOSITORY.update(
         {
           userId
@@ -91,7 +126,7 @@ export class UsersService {
 
       return {
         code: 200,
-        message: 'Usuario asociado al empresa'
+        message: 'Usuario asociado a la empresa satisfactoriamente'
       };
     } catch (error) {
       console.error('\x1b[31m%s\x1b[0m', error.code, error.message);
