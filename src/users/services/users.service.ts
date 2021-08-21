@@ -78,6 +78,30 @@ export class UsersService {
     }
   }
 
+  async joinCompany(userId: string, companyId: string) {
+    try {
+      await this._USERS_REPOSITORY.update(
+        {
+          userId
+        },
+        {
+          companyId
+        }
+      );
+
+      return {
+        code: 200,
+        message: 'Usuario asociado al empresa'
+      };
+    } catch (error) {
+      console.error('\x1b[31m%s\x1b[0m', error.code, error.message);
+      return {
+        code: 500,
+        message: 'Hubo un error al asociar el usuario a la empresa'
+      };
+    }
+  }
+
   async login(userData: LoginUserByEmailDto | LoginUserByUsernameDto) {
     let user: UserEntity;
 

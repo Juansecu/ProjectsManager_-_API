@@ -1,6 +1,7 @@
-import { Body, Controller, Post } from '@nestjs/common';
+import { Body, Controller, Post, Put } from '@nestjs/common';
 
 import { AddUserDto } from './dtos/add-user.dto';
+import { JoinCompanyDto } from './dtos/join-company.dto';
 import { LoginUserByEmailDto } from './dtos/login-user-by-email.dto';
 import { LoginUserByUsernameDto } from './dtos/login-user-by-username.dto';
 
@@ -13,6 +14,14 @@ export class UsersController {
   @Post('register')
   addUser(@Body() newUser: AddUserDto) {
     return this._USERS_SERVICE.addUser(newUser);
+  }
+
+  @Put('join-company')
+  joinCompany(@Body() joinCompany: JoinCompanyDto) {
+    return this._USERS_SERVICE.joinCompany(
+      joinCompany.userId,
+      joinCompany.companyId
+    );
   }
 
   @Post('login')
