@@ -1,4 +1,13 @@
-import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
+import {
+  Column,
+  Entity,
+  JoinColumn,
+  ManyToOne,
+  PrimaryGeneratedColumn
+} from 'typeorm';
+
+import ProjectEntity from 'src/projects/entities/project.entity';
+import UserHistoryEntity from 'src/users/entities/user-history.entity';
 
 @Entity('Tickets')
 export default class TicketEntity {
@@ -13,8 +22,27 @@ export default class TicketEntity {
     nullable: false
   })
   status: string;
-  @Column('uuid', { name: 'Project_id', nullable: false }) projectId: string;
-  @Column('uuid', { name: 'User_history_id', nullable: false })
+  @JoinColumn({ name: 'Project_id' })
+  @ManyToOne(
+    () => ProjectEntity,
+    (projectEntity: ProjectEntity) => projectEntity.projectId,
+    {
+      nullable: false,
+      onDelete: 'CASCADE',
+      onUpdate: 'CASCADE'
+    }
+  )
+  projectId: string;
+  @JoinColumn({ name: 'User_history_id' })
+  @ManyToOne(
+    () => UserHistoryEntity,
+    (userHistoryEntity: UserHistoryEntity) => userHistoryEntity.userHistoryId,
+    {
+      nullable: false,
+      onDelete: 'CASCADE',
+      onUpdate: 'CASCADE'
+    }
+  )
   userHistoryId: string;
   @Column('datetime', {
     default: () => 'CURRENT_TIMESTAMP',
