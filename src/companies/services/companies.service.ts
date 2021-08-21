@@ -14,4 +14,19 @@ export class CompaniesService {
   getCompanies(): Promise<CompanyEntity[]> {
     return this._COMPANIES_REPOSITORY.find();
   }
+
+  async getCompanyById(companyId: string): Promise<CompanyEntity> {
+    try {
+      const companyExists = await this._COMPANIES_REPOSITORY.findOne({
+        where: { companyId }
+      });
+
+      if (companyExists) return companyExists;
+
+      return null;
+    } catch (error) {
+      console.error('\x1b[31m%s\x1b[0m', error.code, error.message);
+      return null;
+    }
+  }
 }
