@@ -1,4 +1,12 @@
-import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
+import {
+  Column,
+  Entity,
+  JoinColumn,
+  OneToOne,
+  PrimaryGeneratedColumn
+} from 'typeorm';
+
+import CompanyEntity from 'src/companies/entities/company.entity';
 
 import { IUser } from '../typings/User';
 
@@ -25,6 +33,13 @@ export default class UserEntity implements IUser {
   lastName: string;
   @Column('varchar', { length: 60, name: 'Password', nullable: false })
   password: string;
+  @JoinColumn({ name: 'Company_id' })
+  @OneToOne(() => CompanyEntity, companyEntity => companyEntity.companyId, {
+    nullable: true,
+    onDelete: 'CASCADE',
+    onUpdate: 'CASCADE'
+  })
+  companyId: string;
   @Column('datetime', {
     default: () => 'CURRENT_TIMESTAMP',
     name: 'Registered_at'
