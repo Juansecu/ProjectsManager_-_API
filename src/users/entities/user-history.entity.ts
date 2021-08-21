@@ -7,6 +7,7 @@ import {
 } from 'typeorm';
 
 import UserEntity from './user.entity';
+import ProjectEntity from 'src/projects/entities/project.entity';
 
 import { IUserHistory } from '../typings/UserHistory';
 
@@ -16,6 +17,8 @@ export default class UserHistoryEntity implements IUserHistory {
   userHistoryId: string;
   @Column('varchar', { length: 45, name: 'Title', nullable: false })
   title: string;
+  @Column('tinytext', { name: 'Description', nullable: false })
+  description: string;
   @JoinColumn({ name: 'User_id' })
   @ManyToOne(() => UserEntity, user => user.userId, {
     nullable: false,
@@ -23,6 +26,17 @@ export default class UserHistoryEntity implements IUserHistory {
     onUpdate: 'CASCADE'
   })
   userId: string;
+  @JoinColumn({ name: 'Project_id' })
+  @ManyToOne(
+    () => ProjectEntity,
+    (projectEntity: ProjectEntity) => projectEntity.projectId,
+    {
+      nullable: false,
+      onDelete: 'CASCADE',
+      onUpdate: 'CASCADE'
+    }
+  )
+  projectId: string;
   @Column('datetime', {
     default: () => 'CURRENT_TIMESTAMP',
     name: 'Created_at'

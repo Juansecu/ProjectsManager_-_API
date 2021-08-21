@@ -6,7 +6,6 @@ import {
   PrimaryGeneratedColumn
 } from 'typeorm';
 
-import ProjectEntity from 'src/projects/entities/project.entity';
 import UserHistoryEntity from 'src/users/entities/user-history.entity';
 
 @Entity('Tickets')
@@ -14,25 +13,12 @@ export default class TicketEntity {
   @PrimaryGeneratedColumn('uuid', { name: 'Ticket_id' }) ticketId: string;
   @Column('varchar', { length: 45, name: 'Title', nullable: false })
   title: string;
-  @Column('tinytext', { name: 'Description', nullable: false })
-  description: string;
   @Column('enum', {
     enum: ['Activo', 'En proceso', 'Finalizado'],
     name: 'Status',
     nullable: false
   })
   status: string;
-  @JoinColumn({ name: 'Project_id' })
-  @ManyToOne(
-    () => ProjectEntity,
-    (projectEntity: ProjectEntity) => projectEntity.projectId,
-    {
-      nullable: false,
-      onDelete: 'CASCADE',
-      onUpdate: 'CASCADE'
-    }
-  )
-  projectId: string;
   @JoinColumn({ name: 'User_history_id' })
   @ManyToOne(
     () => UserHistoryEntity,
