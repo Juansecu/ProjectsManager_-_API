@@ -9,6 +9,7 @@ import { CompaniesModule } from './companies/companies.module';
 import { ProjectsModule } from './projects/projects.module';
 import { TicketsModule } from './tickets/tickets.module';
 import { UsersModule } from './users/users.module';
+import { UserHistoriesModule } from './user-histories/user-histories.module';
 
 @Module({
   imports: [
@@ -28,7 +29,8 @@ import { UsersModule } from './users/users.module';
     CompaniesModule,
     ProjectsModule,
     TicketsModule,
-    UsersModule
+    UsersModule,
+    UserHistoriesModule
   ],
   controllers: [AppController],
   providers: [AppService]

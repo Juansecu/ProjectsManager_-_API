@@ -6,7 +6,7 @@ import {
   PrimaryGeneratedColumn
 } from 'typeorm';
 
-import UserHistoryEntity from 'src/users/entities/user-history.entity';
+import UserHistoryEntity from 'src/user-histories/entities/user-history.entity';
 
 @Entity('Tickets')
 export default class TicketEntity {

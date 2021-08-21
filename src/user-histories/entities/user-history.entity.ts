@@ -6,8 +6,8 @@ import {
   PrimaryGeneratedColumn
 } from 'typeorm';
 
-import UserEntity from './user.entity';
 import ProjectEntity from 'src/projects/entities/project.entity';
+import UserEntity from 'src/users/entities/user.entity';
 
 import { IUserHistory } from '../typings/UserHistory';
 
