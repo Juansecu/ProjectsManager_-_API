@@ -8,6 +8,7 @@ import UserHistoryEntity from './entities/user-history.entity';
 @Module({
   imports: [TypeOrmModule.forFeature([UserHistoryEntity])],
   controllers: [UserHistoriesController],
-  providers: [UserHistoriesService]
+  providers: [UserHistoriesService],
+  exports: [UserHistoriesService]
 })
 export class UserHistoriesModule {}
