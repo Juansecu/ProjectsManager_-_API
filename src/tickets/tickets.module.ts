@@ -16,6 +16,7 @@ import { TicketsService } from './services/tickets.service';
     UserHistoriesModule
   ],
   controllers: [TicketsController],
-  providers: [TicketsService]
+  providers: [TicketsService],
+  exports: [TicketsService]
 })
 export class TicketsModule {}

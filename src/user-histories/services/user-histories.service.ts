@@ -6,16 +6,27 @@ import UserHistoryEntity from '../entities/user-history.entity';
 
 import { CreateUserHistoryDto } from '../dtos/create-user-history.dto';
 
+import { TicketsService } from 'src/tickets/services/tickets.service';
+
 @Injectable()
 export class UserHistoriesService {
+  private _ticketsService: TicketsService;
+
   constructor(
     @InjectRepository(UserHistoryEntity)
-    private readonly _USER_HISTORIES_REPOSITORY: Repository<UserHistoryEntity>
+    private readonly _USER_HISTORIES_REPOSITORY: Repository<UserHistoryEntity>,
+    private readonly _TICKETS_SERVICE: TicketsService
   ) {}
 
   async createUserHistory(userHistory: CreateUserHistoryDto) {
     try {
-      await this._USER_HISTORIES_REPOSITORY.insert(userHistory);
+      const userHistoryId = await (
+        await this._USER_HISTORIES_REPOSITORY.insert(userHistory)
+      ).identifiers[0].userHistoryId;
+      await this._TICKETS_SERVICE.createTicket({
+        title: userHistory.title,
+        userHistoryId
+      });
       return {
         code: 201,
         message: 'Historia de usuario ha sido creada satisfactoriamente'

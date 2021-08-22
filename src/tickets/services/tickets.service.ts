@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { forwardRef, Inject, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 
@@ -14,6 +14,7 @@ export class TicketsService {
   constructor(
     @InjectRepository(TicketEntity)
     private readonly _TICKETS_REPOSITORY: Repository<TicketEntity>,
+    @Inject(forwardRef(() => UserHistoriesService))
     private readonly _USER_HISTORIES_SERVICE: UserHistoriesService
   ) {}
 
@@ -40,12 +41,13 @@ export class TicketsService {
       const userHistories: UserHistoryEntity[] =
         await this._USER_HISTORIES_SERVICE.getUserHistoriesByUserId(userId);
 
-      userHistories.forEach(async ({ userHistoryId }) => {
+      userHistories.map(async ({ userHistoryId }) => {
         const tickets = await this._TICKETS_REPOSITORY.find({
           where: { userHistoryId }
         });
 
-        for (const ticket of tickets) userTickets.push(ticket);
+        // @TODO: Arreglar la colocación de tickets en el arreglo.
+        tickets.map(ticket => userTickets.push({ ...ticket }));
       });
 
       return userTickets;
