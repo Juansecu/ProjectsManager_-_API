@@ -7,6 +7,7 @@ import { AppService } from './app.service';
 
 import { CompaniesModule } from './companies/companies.module';
 import { ProjectsModule } from './projects/projects.module';
+import { SharedModule } from './shared/shared.module';
 import { TicketsModule } from './tickets/tickets.module';
 import { UsersModule } from './users/users.module';
 import { UserHistoriesModule } from './user-histories/user-histories.module';
@@ -26,6 +27,7 @@ import { UserHistoriesModule } from './user-histories/user-histories.module';
     }),
     CompaniesModule,
     ProjectsModule,
+    SharedModule,
     TicketsModule,
     UsersModule,
     UserHistoriesModule
