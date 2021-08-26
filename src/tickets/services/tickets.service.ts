@@ -41,14 +41,12 @@ export class TicketsService {
       const userHistories: UserHistoryEntity[] =
         await this._USER_HISTORIES_SERVICE.getUserHistoriesByUserId(userId);
 
-      userHistories.map(async ({ userHistoryId }) => {
+      await Promise.all(userHistories.map(async ({ userHistoryId }) => {
         const tickets = await this._TICKETS_REPOSITORY.find({
-          where: { userHistoryId }
-        });
-
-        // @TODO: Arreglar la colocación de tickets en el arreglo.
+            where: { userHistoryId }
+          });
         tickets.map(ticket => userTickets.push({ ...ticket }));
-      });
+      }));
 
       return userTickets;
     } catch (error) {
