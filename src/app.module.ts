@@ -16,13 +16,11 @@ import { UserHistoriesModule } from './user-histories/user-histories.module';
     ConfigModule.forRoot(),
     TypeOrmModule.forRoot({
       database: process.env.DATABASE_NAME,
-      dropSchema: true,
       entities: [__dirname + '/**/**/*.entity.{ts,js}'],
       host: process.env.DATABASE_HOST,
       migrationsRun: true,
       password: process.env.DATABASE_PASSWORD,
       port: parseInt(process.env.DATABASE_PORT, 10),
-      synchronize: true,
       type: 'mysql',
       username: process.env.DATABASE_USER
     }),
