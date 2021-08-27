@@ -10,7 +10,7 @@ import CompanyEntity from 'src/companies/entities/company.entity';
 
 import { IUser } from '../typings/User';
 
-@Entity({ name: 'Users' })
+@Entity('Users')
 export default class UserEntity implements IUser {
   @PrimaryGeneratedColumn('uuid', { name: 'User_id' }) userId: string;
   @Column('varchar', {

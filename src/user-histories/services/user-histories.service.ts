@@ -2,22 +2,23 @@ import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 
+import UserEntity from 'src/users/entities/user.entity';
 import UserHistoryEntity from '../entities/user-history.entity';
 
 import { CreateUserHistoryDto } from '../dtos/create-user-history.dto';
 
 import { JwtService } from 'src/shared/services/jwt/jwt.service';
 import { TicketsService } from 'src/tickets/services/tickets.service';
+import { UsersService } from 'src/users/services/users.service';
 
 @Injectable()
 export class UserHistoriesService {
-  private _ticketsService: TicketsService;
-
   constructor(
     @InjectRepository(UserHistoryEntity)
     private readonly _USER_HISTORIES_REPOSITORY: Repository<UserHistoryEntity>,
     private readonly _JWT_SERVICE: JwtService,
-    private readonly _TICKETS_SERVICE: TicketsService
+    private readonly _TICKETS_SERVICE: TicketsService,
+    private readonly _USERS_SERVICE: UsersService
   ) {}
 
   async createUserHistory(
@@ -40,13 +41,23 @@ export class UserHistoriesService {
       };
 
     try {
+      const user: UserEntity = await this._USERS_SERVICE.getUserById(userId);
+
+      if (!user)
+        return {
+          status: 404,
+          message: 'User not found'
+        };
+
       const userHistoryId = await (
         await this._USER_HISTORIES_REPOSITORY.insert({ ...userHistory, userId })
       ).identifiers[0].userHistoryId;
+
       await this._TICKETS_SERVICE.createTicket({
         title: userHistory.title,
         userHistoryId
       });
+
       return {
         code: 201,
         message: 'Historia de usuario ha sido creada satisfactoriamente'
