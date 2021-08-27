@@ -41,7 +41,7 @@ export class UserHistoriesService {
 
     try {
       const userHistoryId = await (
-        await this._USER_HISTORIES_REPOSITORY.insert(userHistory)
+        await this._USER_HISTORIES_REPOSITORY.insert({ ...userHistory, userId })
       ).identifiers[0].userHistoryId;
       await this._TICKETS_SERVICE.createTicket({
         title: userHistory.title,
