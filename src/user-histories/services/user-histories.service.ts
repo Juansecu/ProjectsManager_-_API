@@ -6,6 +6,7 @@ import UserHistoryEntity from '../entities/user-history.entity';
 
 import { CreateUserHistoryDto } from '../dtos/create-user-history.dto';
 
+import { JwtService } from 'src/shared/services/jwt/jwt.service';
 import { TicketsService } from 'src/tickets/services/tickets.service';
 
 @Injectable()
@@ -15,10 +16,29 @@ export class UserHistoriesService {
   constructor(
     @InjectRepository(UserHistoryEntity)
     private readonly _USER_HISTORIES_REPOSITORY: Repository<UserHistoryEntity>,
+    private readonly _JWT_SERVICE: JwtService,
     private readonly _TICKETS_SERVICE: TicketsService
   ) {}
 
-  async createUserHistory(userHistory: CreateUserHistoryDto) {
+  async createUserHistory(
+    userHistory: CreateUserHistoryDto,
+    authToken: string
+  ) {
+    if (!authToken)
+      return {
+        status: 401,
+        message: 'Unauthorized'
+      };
+
+    const userId = (this._JWT_SERVICE.verifyToken(authToken) as any)
+      .userId as string;
+
+    if (!userId)
+      return {
+        status: 401,
+        message: 'Unauthorized'
+      };
+
     try {
       const userHistoryId = await (
         await this._USER_HISTORIES_REPOSITORY.insert(userHistory)

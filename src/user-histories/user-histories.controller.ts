@@ -1,4 +1,4 @@
-import { Body, Controller, Post } from '@nestjs/common';
+import { Body, Controller, Headers, Post } from '@nestjs/common';
 
 import { CreateUserHistoryDto } from './dtos/create-user-history.dto';
 
@@ -11,9 +11,13 @@ export class UserHistoriesController {
   ) {}
 
   @Post('create')
-  async createUserHistory(@Body() newUserHistory: CreateUserHistoryDto) {
+  async createUserHistory(
+    @Headers('x-authorization') authToken: string,
+    @Body() newUserHistory: CreateUserHistoryDto
+  ) {
     return await this._USERS_HISTORIES_SERVICE.createUserHistory(
-      newUserHistory
+      newUserHistory,
+      authToken
     );
   }
 }

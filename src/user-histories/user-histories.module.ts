@@ -3,6 +3,7 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 
 import UserHistoryEntity from './entities/user-history.entity';
 
+import { SharedModule } from 'src/shared/shared.module';
 import { TicketsModule } from '../tickets/tickets.module';
 
 import { UserHistoriesController } from './user-histories.controller';
@@ -12,7 +13,8 @@ import { UserHistoriesService } from './services/user-histories.service';
 @Module({
   imports: [
     TypeOrmModule.forFeature([UserHistoryEntity]),
-    forwardRef(() => TicketsModule)
+    forwardRef(() => TicketsModule),
+    SharedModule
   ],
   controllers: [UserHistoriesController],
   providers: [UserHistoriesService],
