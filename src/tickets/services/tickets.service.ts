@@ -63,11 +63,7 @@ export class TicketsService {
           message: 'Usuario no encontrado'
         };
 
-      const tickets: TicketEntity[] = await this._TICKETS_REPOSITORY.find({
-        where: { userId }
-      });
-
-      return tickets;
+      return this.getTicketsByUserId(userId);
     } catch (error) {
       console.log('\x1b[31m%s\x1b[0m', error.code, error.message);
       return {
