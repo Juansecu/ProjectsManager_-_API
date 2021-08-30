@@ -27,7 +27,7 @@ export class UserHistoriesService {
   ) {
     if (!authToken)
       return {
-        status: 401,
+        code: 401,
         message: 'Unauthorized'
       };
 
@@ -36,7 +36,7 @@ export class UserHistoriesService {
 
     if (!userId)
       return {
-        status: 401,
+        code: 401,
         message: 'Unauthorized'
       };
 
@@ -45,7 +45,7 @@ export class UserHistoriesService {
 
       if (!user)
         return {
-          status: 404,
+          code: 404,
           message: 'User not found'
         };
 
