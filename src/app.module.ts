@@ -10,7 +10,7 @@ import { ProjectsModule } from './projects/projects.module';
 import { SharedModule } from './shared/shared.module';
 import { TicketsModule } from './tickets/tickets.module';
 import { UsersModule } from './users/users.module';
-import { UserHistoriesModule } from './user-histories/user-histories.module';
+import { UserStoriesModule } from './user-stories/user-stories.module';
 
 @Module({
   imports: [
@@ -30,7 +30,7 @@ import { UserHistoriesModule } from './user-histories/user-histories.module';
     SharedModule,
     TicketsModule,
     UsersModule,
-    UserHistoriesModule
+    UserStoriesModule
   ],
   controllers: [AppController],
   providers: [AppService]

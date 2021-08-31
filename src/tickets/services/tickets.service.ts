@@ -3,21 +3,21 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 
 import TicketEntity from '../entities/ticket.entity';
-import UserHistoryEntity from 'src/user-histories/entities/user-history.entity';
+import UserStoryEntity from 'src/user-stories/entities/user-story.entity';
 
 import { CreateTicketDto } from '../dtos/create-ticket.dto';
 
 import { JwtService } from 'src/shared/services/jwt/jwt.service';
 import { UsersService } from 'src/users/services/users.service';
-import { UserHistoriesService } from 'src/user-histories/services/user-histories.service';
+import { UserStoriesService } from 'src/user-stories/services/user-stories.service';
 
 @Injectable()
 export class TicketsService {
   constructor(
     @InjectRepository(TicketEntity)
     private readonly _TICKETS_REPOSITORY: Repository<TicketEntity>,
-    @Inject(forwardRef(() => UserHistoriesService))
-    private readonly _USER_HISTORIES_SERVICE: UserHistoriesService,
+    @Inject(forwardRef(() => UserStoriesService))
+    private readonly _USER_STORIES_SERVICE: UserStoriesService,
     private readonly _JWT_SERVICE: JwtService,
     private readonly _USERS_SERVICE: UsersService
   ) {}
@@ -121,13 +121,13 @@ export class TicketsService {
     try {
       const userTickets: TicketEntity[] = [];
 
-      const userHistories: UserHistoryEntity[] =
-        await this._USER_HISTORIES_SERVICE.getUserHistoriesByUserId(userId);
+      const userStories: UserStoryEntity[] =
+        await this._USER_STORIES_SERVICE.getUserStoriesByUserId(userId);
 
       await Promise.all(
-        userHistories.map(async ({ userHistoryId }) => {
+        userStories.map(async ({ userStoryId }) => {
           const tickets = await this._TICKETS_REPOSITORY.find({
-            where: { userHistoryId }
+            where: { userStoryId }
           });
           tickets.map(ticket => userTickets.push({ ...ticket }));
         })

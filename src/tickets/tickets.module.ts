@@ -6,7 +6,7 @@ import TicketCommentEntity from './entities/ticket-comment.entity';
 
 import { SharedModule } from 'src/shared/shared.module';
 import { UsersModule } from 'src/users/users.module';
-import { UserHistoriesModule } from 'src/user-histories/user-histories.module';
+import { UserStoriesModule } from 'src/user-stories/user-stories.module';
 
 import { TicketsController } from './tickets.controller';
 
@@ -17,7 +17,7 @@ import { TicketsService } from './services/tickets.service';
     TypeOrmModule.forFeature([TicketEntity, TicketCommentEntity]),
     SharedModule,
     UsersModule,
-    UserHistoriesModule
+    UserStoriesModule
   ],
   controllers: [TicketsController],
   providers: [TicketsService],

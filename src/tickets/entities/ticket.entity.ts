@@ -6,7 +6,7 @@ import {
   PrimaryGeneratedColumn
 } from 'typeorm';
 
-import UserHistoryEntity from 'src/user-histories/entities/user-history.entity';
+import UserStoryEntity from 'src/user-stories/entities/user-story.entity';
 
 @Entity('Tickets')
 export default class TicketEntity {
@@ -19,17 +19,17 @@ export default class TicketEntity {
     nullable: false
   })
   status: string;
-  @JoinColumn({ name: 'User_history_id' })
+  @JoinColumn({ name: 'User_story_id' })
   @ManyToOne(
-    () => UserHistoryEntity,
-    (userHistoryEntity: UserHistoryEntity) => userHistoryEntity.userHistoryId,
+    () => UserStoryEntity,
+    (userStoryEntity: UserStoryEntity) => userStoryEntity.userStoryId,
     {
       nullable: false,
       onDelete: 'CASCADE',
       onUpdate: 'CASCADE'
     }
   )
-  userHistoryId: string;
+  userStoryId: string;
   @Column('datetime', {
     default: () => 'CURRENT_TIMESTAMP',
     name: 'Created_at'

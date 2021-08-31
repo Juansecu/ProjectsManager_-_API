@@ -3,28 +3,25 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 
 import UserEntity from 'src/users/entities/user.entity';
-import UserHistoryEntity from '../entities/user-history.entity';
+import UserStoryEntity from '../entities/user-story.entity';
 
-import { CreateUserHistoryDto } from '../dtos/create-user-history.dto';
+import { CreateUserStoryDto } from '../dtos/create-user-story.dto';
 
 import { JwtService } from 'src/shared/services/jwt/jwt.service';
 import { TicketsService } from 'src/tickets/services/tickets.service';
 import { UsersService } from 'src/users/services/users.service';
 
 @Injectable()
-export class UserHistoriesService {
+export class UserStoriesService {
   constructor(
-    @InjectRepository(UserHistoryEntity)
-    private readonly _USER_HISTORIES_REPOSITORY: Repository<UserHistoryEntity>,
+    @InjectRepository(UserStoryEntity)
+    private readonly _USER_STORIES_REPOSITORY: Repository<UserStoryEntity>,
     private readonly _JWT_SERVICE: JwtService,
     private readonly _TICKETS_SERVICE: TicketsService,
     private readonly _USERS_SERVICE: UsersService
   ) {}
 
-  async createUserHistory(
-    userHistory: CreateUserHistoryDto,
-    authToken: string
-  ) {
+  async createUserStory(userStory: CreateUserStoryDto, authToken: string) {
     if (!authToken)
       return {
         code: 401,
@@ -49,13 +46,13 @@ export class UserHistoriesService {
           message: 'User not found'
         };
 
-      const userHistoryId = await (
-        await this._USER_HISTORIES_REPOSITORY.insert({ ...userHistory, userId })
-      ).identifiers[0].userHistoryId;
+      const userStoryId = await (
+        await this._USER_STORIES_REPOSITORY.insert({ ...userStory, userId })
+      ).identifiers[0].userStoryId;
 
       await this._TICKETS_SERVICE.createTicket({
-        title: userHistory.title,
-        userHistoryId
+        title: userStory.title,
+        userStoryId
       });
 
       return {
@@ -71,9 +68,9 @@ export class UserHistoriesService {
     }
   }
 
-  async getUserHistoriesByUserId(userId: string) {
+  async getUserStoriesByUserId(userId: string) {
     try {
-      return await this._USER_HISTORIES_REPOSITORY.find({
+      return await this._USER_STORIES_REPOSITORY.find({
         where: { userId }
       });
     } catch (error) {
