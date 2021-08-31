@@ -38,6 +38,50 @@ export class TicketsService {
     }
   }
 
+  async closeTicket(ticketId: string, authToken: string) {
+    if (!authToken)
+      return {
+        code: 401,
+        message: 'No se ha proporcionado el token de autenticación'
+      };
+
+    const userId: string = (this._JWT_SERVICE.verifyToken(authToken) as any)
+      .userId;
+
+    if (!userId)
+      return {
+        code: 401,
+        message: 'Unauthorized'
+      };
+
+    try {
+      const ticket = await this._TICKETS_REPOSITORY.findOne({
+        where: { ticketId }
+      });
+
+      if (!ticket)
+        return {
+          code: 404,
+          message: 'Ticket no encontrado'
+        };
+
+      await this._TICKETS_REPOSITORY.update(ticketId, {
+        status: 'Finalizado'
+      });
+
+      return {
+        code: 200,
+        message: 'Ticket cerrado satisfactoriamente'
+      };
+    } catch (error) {
+      console.log('\x1b[31m%s\x1b[0m', error.code, error.message);
+      return {
+        code: 500,
+        message: 'Error cerrando el ticket'
+      };
+    }
+  }
+
   async getTickets(authToken: string) {
     if (!authToken)
       return {
